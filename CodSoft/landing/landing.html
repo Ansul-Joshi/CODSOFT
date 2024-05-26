@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        nav {
+            margin-right: 40px;
+        }
+        a {  
+            text-decoration: none;
+            color: black;
+            padding-right: 40px;
+            padding-top: 40px;
+            float: right;
+        }
+        img {
+            margin-left: 40px;
+        }
+        h1 {
+            font-size: 50px;
+        }
+        p {
+            width: 700px;
+        }
+        
+        .cupcake {
+            padding-top: 50px;
+            margin-left: 70px;
+            position: relative;
+        }
+        button {
+            border-radius: 100px;
+            height: 30px;
+            color: white;
+            background-color: #bb82cd;
+            border: none;
+        }
+
+        .c {
+            --quarter-circle-color: #bb82cd; 
+        }
+
+        .c::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 600px;
+            height: 600px;
+            background: var(--quarter-circle-color);
+            border-top-left-radius: 700px;
+            z-index: -1;
+        }
+
+        .cake {
+            float: right;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav"></div>
+    <nav>
+        <img src="logo purple.png" width="100px" id="logo">
+        <a href="">FAQ</a>
+        <a href="">Contact</a>
+        <a href="">Our Menu</a>
+        <a href="">Home</a>
+    </nav>
+    <div class="cupcake">
+        <div class="cct">
+            <div class="cake">
+                <img src="browncc.png" width="50px" onclick="changeImage('browncc.png','logo brown.png','#4c2f29','A rich and moist cupcake made with cocoa powder, often topped with a creamy chocolate frosting. Its a classic treat for chocolate lovers, perfect for any occasion where a decadent dessert is desired.')"><br><br><br><br><br>
+                <img src="pinkcc.png" width="50px" onclick="changeImage('pinkcc.png','logo pink.png','#e899aa','Infused with fresh strawberry pieces or strawberry puree, this cupcake is both vibrant and flavorful. It is usually topped with a strawberry or cream cheese frosting, making it a popular choice for spring and summer events.')"><br><br><br><br><br>
+                <img src="purple_cc.png" width="50px" onclick="changeImage('purple_cc.png','logo purple.png','#bb82cd','This cupcake features fresh or frozen blueberries mixed into the batter, creating a sweet and slightly tart flavor profile. Typically topped with a vanilla or lemon frosting, its a delightful option for those who enjoy fruity desserts.')">
+            </div>
+            <img id="mainCupcake" src="purple_cc.png" width="400px" style="float: right; margin-right: 150px;">
+            <h1>Shop <span id="sp" style="color: #bb82cd;">Cupcakes</span></h1>
+            <h3>Order Cupcake For your Party</h3>
+            <p id="des">
+                A cupcake shop, with its delightful array of colorful and whimsical creations, is a haven...
+            </p>
+        </div>
+        <button id="b">Order Now</button>
+    </div>
+    <div class="c" id="qc"></div>
+
+    <script>
+        function changeImage(imgPath, logopath, col,des) {
+            document.getElementById('mainCupcake').src = imgPath;
+            document.getElementById('logo').src = logopath;
+            document.querySelector('.c').style.setProperty('--quarter-circle-color', col);
+            document.getElementById('b').style.setProperty('background-color',col);
+            document.getElementById('sp').style.setProperty('color',col);
+            document.getElementById('des').innerHTML=des;       
+        }
+    </script>
+</body>
+</html>

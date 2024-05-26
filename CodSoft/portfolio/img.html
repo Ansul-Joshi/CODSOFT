@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enhanced Navigation Bar</title>
+<script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+<link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-circle-progress/dist/circle-progress.min.js" type="module"></script>
+    <style>
+    circle-progress::part(value) {
+	stroke-width: 10px;
+	stroke: #888;
+	stroke-linecap: round;
+}
+circle-progress::part(circle) {
+	stroke-width: 10px;
+	stroke: white;
+}
+circle-progress::part(text) {
+	fill: white;
+}
+
+    </style>
+<style>
+
+  /* Resetting default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+  border-radius: 20px;
+  margin-bottom: 10px; /* Added margin for spacing between bars */
+}
+
+.myBar {
+  width: 1%; /* Start width */
+  height: 30px;
+  background-color: gray;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+  border-radius: 20px;
+  transition: width 0.1s ease-in-out;
+}
+/* Navbar styles */
+.navbar {
+  background-color:rgb(15, 15, 15);
+  padding: 0px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Ensure the navbar is on top of other content */
+}
+
+.nav-list {
+  list-style-type: none;
+  display: flex; /* Use flexbox for inline items */
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin-right: 200px;
+}
+
+.nav-list li {
+  margin-right: 20px;
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+.nav-list li:last-child {
+  margin-right: 0;
+}
+
+.nav-list li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.nav-list li a:hover {
+  background-color: #555;
+}
+
+.colorful-div {
+  height: 100vh;
+  font-size: 24px;
+  color: white;
+  padding-top: 60px; /* Adjust padding-top to accommodate the fixed navbar */
+}
+
+/* Individual div background colors for demonstration */
+#div1 {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1144%26quot%3b)' fill='none'%3e%3cpath d='M1033.17 511.17L1040.71 521.52 1032.26 531.15 1039.79 541.5 1031.34 551.13 1038.88 561.48 1030.43 571.11' stroke='rgba(69%2c 71%2c 72%2c 1)' stroke-width='2.93' stroke-dasharray='2%2c 2'%3e%3c/path%3e%3crect width='94.39999999999999' height='94.39999999999999' clip-path='url(%26quot%3b%23SvgjsClipPath1145%26quot%3b)' x='-35.17' y='326.92' fill='url(%26quot%3b%23SvgjsPattern1146%26quot%3b)' transform='rotate(98.98%2c 12.03%2c 374.12)'%3e%3c/rect%3e%3cpath d='M1210.91 455.17a5.6 5.6 0 1 0 7.69 8.14 5.6 5.6 0 1 0-7.69-8.14zM1221.9 466.8a5.6 5.6 0 1 0 7.69 8.15 5.6 5.6 0 1 0-7.69-8.15zM1232.88 478.44a5.6 5.6 0 1 0 7.69 8.14 5.6 5.6 0 1 0-7.69-8.14zM1243.86 490.07a5.6 5.6 0 1 0 7.69 8.15 5.6 5.6 0 1 0-7.69-8.15zM1177.31 442.88a5.6 5.6 0 1 0 7.69 8.15 5.6 5.6 0 1 0-7.69-8.15zM1188.3 454.52a5.6 5.6 0 1 0 7.68 8.14 5.6 5.6 0 1 0-7.68-8.14zM1199.28 466.15a5.6 5.6 0 1 0 7.69 8.15 5.6 5.6 0 1 0-7.69-8.15zM1210.26 477.79a5.6 5.6 0 1 0 7.69 8.14 5.6 5.6 0 1 0-7.69-8.14z' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='1' stroke-dasharray='3%2c 2'%3e%3c/path%3e%3cpath d='M155.61 171.96L154.6 159.19 166.84 155.41 165.83 142.64 178.07 138.86 177.06 126.09 189.3 122.31M162.23 176.45L161.22 163.68 173.46 159.9 172.45 147.13 184.69 143.35 183.68 130.58 195.92 126.8M168.85 180.94L167.84 168.17 180.08 164.39 179.07 151.62 191.31 147.84 190.3 135.08 202.54 131.29' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='1.22' stroke-dasharray='3%2c 2'%3e%3c/path%3e%3crect width='111' height='111' clip-path='url(%26quot%3b%23SvgjsClipPath1147%26quot%3b)' x='0.7' y='427.28' fill='url(%26quot%3b%23SvgjsPattern1148%26quot%3b)' transform='rotate(182.66%2c 56.2%2c 482.78)'%3e%3c/rect%3e%3crect width='272.8' height='272.8' clip-path='url(%26quot%3b%23SvgjsClipPath1149%26quot%3b)' x='383.32' y='387.98' fill='url(%26quot%3b%23SvgjsPattern1150%26quot%3b)' transform='rotate(196.7%2c 519.72%2c 524.38)'%3e%3c/rect%3e%3crect width='250' height='250' clip-path='url(%26quot%3b%23SvgjsClipPath1151%26quot%3b)' x='1119.74' y='-86.14' fill='url(%26quot%3b%23SvgjsPattern1152%26quot%3b)' transform='rotate(215%2c 1244.74%2c 38.86)'%3e%3c/rect%3e%3ccircle r='46.666666666666664' cx='167.06' cy='484.32' fill='rgba(0%2c 0%2c 0%2c 1)'%3e%3c/circle%3e%3crect width='122.2' height='122.2' clip-path='url(%26quot%3b%23SvgjsClipPath1153%26quot%3b)' x='1032.66' y='51.61' fill='url(%26quot%3b%23SvgjsPattern1154%26quot%3b)' transform='rotate(214%2c 1093.76%2c 112.71)'%3e%3c/rect%3e%3crect width='204' height='204' clip-path='url(%26quot%3b%23SvgjsClipPath1155%26quot%3b)' x='1215.67' y='276.53' fill='url(%26quot%3b%23SvgjsPattern1156%26quot%3b)' transform='rotate(265.5%2c 1317.67%2c 378.53)'%3e%3c/rect%3e%3crect width='168' height='168' clip-path='url(%26quot%3b%23SvgjsClipPath1157%26quot%3b)' x='372.72' y='78.25' fill='url(%26quot%3b%23SvgjsPattern1158%26quot%3b)' transform='rotate(16.86%2c 456.72%2c 162.25)'%3e%3c/rect%3e%3cpath d='M1366.9499999999998 161.24 L1420.59 228.56L1342.005143830259 246.66485616974109z' stroke='rgba(142%2c 146%2c 149%2c 1)' stroke-width='1' stroke-dasharray='3%2c 3'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1144'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cpattern x='0' y='0' width='9.44' height='9.44' patternUnits='userSpaceOnUse' id='SvgjsPattern1146'%3e%3cpath d='M0 9.44L4.72 0L9.44 9.44' stroke='rgba(69%2c 71%2c 72%2c 1)' fill='none'%3e%3c/path%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath1145'%3e%3ccircle r='23.599999999999998' cx='12.03' cy='374.12'%3e%3c/circle%3e%3c/clipPath%3e%3cpattern x='0' y='0' width='111' height='11.1' patternUnits='userSpaceOnUse' id='SvgjsPattern1148'%3e%3crect width='111' height='5.55' x='0' y='0' fill='rgba(0%2c 0%2c 0%2c 1)'%3e%3c/rect%3e%3crect width='111' height='5.55' x='0' y='5.55' fill='rgba(0%2c 0%2c 0%2c 0)'%3e%3c/rect%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath1147'%3e%3ccircle r='27.75' cx='56.2' cy='482.78'%3e%3c/circle%3e%3c/clipPath%3e%3cpattern x='0' y='0' width='12.4' height='12.4' patternUnits='userSpaceOnUse' id='SvgjsPattern1150'%3e%3cpath d='M6.2 1L6.2 11.4M1 6.2L11.4 6.2' stroke='rgba(0%2c 0%2c 0%2c 1)' fill='none' stroke-width='3.63'%3e%3c/path%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath1149'%3e%3ccircle r='68.2' cx='519.72' cy='524.38'%3e%3c/circle%3e%3c/clipPath%3e%3cpattern x='0' y='0' width='12.5' height='12.5' patternUnits='userSpaceOnUse' id='SvgjsPattern1152'%3e%3cpath d='M6.25 1L6.25 11.5M1 6.25L11.5 6.25' stroke='rgba(69%2c 71%2c 72%2c 1)' fill='none' stroke-width='2.55'%3e%3c/path%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath1151'%3e%3ccircle r='62.5' cx='1244.74' cy='38.86'%3e%3c/circle%3e%3c/clipPath%3e%3cpattern x='0' y='0' width='122.2' height='12.22' patternUnits='userSpaceOnUse' id='SvgjsPattern1154'%3e%3crect width='122.2' height='6.11' x='0' y='0' fill='rgba(69%2c 71%2c 72%2c 1)'%3e%3c/rect%3e%3crect width='122.2' height='6.11' x='0' y='6.11' fill='rgba(0%2c 0%2c 0%2c 0)'%3e%3c/rect%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath1153'%3e%3ccircle r='30.55' cx='1093.76' cy='112.71'%3e%3c/circle%3e%3c/clipPath%3e%3cpattern x='0' y='0' width='204' height='6' patternUnits='userSpaceOnUse' id='SvgjsPattern1156'%3e%3crect width='204' height='3' x='0' y='0' fill='rgba(142%2c 146%2c 149%2c 1)'%3e%3c/rect%3e%3crect width='204' height='3' x='0' y='3' fill='rgba(0%2c 0%2c 0%2c 0)'%3e%3c/rect%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath1155'%3e%3ccircle r='51' cx='1317.67' cy='378.53'%3e%3c/circle%3e%3c/clipPath%3e%3cpattern x='0' y='0' width='6' height='6' patternUnits='userSpaceOnUse' id='SvgjsPattern1158'%3e%3cpath d='M0 6L3 0L6 6' stroke='rgba(0%2c 0%2c 0%2c 1)' fill='none'%3e%3c/path%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath1157'%3e%3ccircle r='42' cx='456.72' cy='162.25'%3e%3c/circle%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e"); 
+  background-color: #919699;
+  display: flex;
+  justify-content: space-around;
+}
+#logo{
+  margin-right: 100px;
+} 
+#div2 { background-color: #5c6164;
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask2767%26quot%3b)' fill='none'%3e%3cpath d='M330.85 491.89L341.02 484.11 350.85 492.33 361.02 484.54 370.84 492.76 381.01 484.98 390.84 493.19M330.68 499.89L340.85 492.11 350.68 500.32 360.85 492.54 370.67 500.76 380.84 492.97 390.67 501.19' stroke='rgba(255%2c 255%2c 255%2c 1)' stroke-width='2.22' stroke-dasharray='2%2c 2'%3e%3c/path%3e%3cpath d='M393.13 205.74a5.6 5.6 0 1 0 10.91 2.51 5.6 5.6 0 1 0-10.91-2.51zM408.72 209.32a5.6 5.6 0 1 0 10.92 2.52 5.6 5.6 0 1 0-10.92-2.52zM424.31 212.91a5.6 5.6 0 1 0 10.92 2.51 5.6 5.6 0 1 0-10.92-2.51zM439.91 216.5a5.6 5.6 0 1 0 10.91 2.51 5.6 5.6 0 1 0-10.91-2.51zM358.36 214.15a5.6 5.6 0 1 0 10.91 2.51 5.6 5.6 0 1 0-10.91-2.51zM373.95 217.74a5.6 5.6 0 1 0 10.91 2.51 5.6 5.6 0 1 0-10.91-2.51zM389.54 221.33a5.6 5.6 0 1 0 10.91 2.51 5.6 5.6 0 1 0-10.91-2.51zM405.13 224.92a5.6 5.6 0 1 0 10.92 2.51 5.6 5.6 0 1 0-10.92-2.51z' fill='rgba(255%2c 255%2c 255%2c 1)'%3e%3c/path%3e%3cpath d='M1290.4 10.5a5.6 5.6 0 1 0 7.13 8.64 5.6 5.6 0 1 0-7.13-8.64zM1300.58 22.84a5.6 5.6 0 1 0 7.13 8.64 5.6 5.6 0 1 0-7.13-8.64zM1310.77 35.18a5.6 5.6 0 1 0 7.12 8.64 5.6 5.6 0 1 0-7.12-8.64zM1320.95 47.53a5.6 5.6 0 1 0 7.12 8.64 5.6 5.6 0 1 0-7.12-8.64zM1257.7-4a5.6 5.6 0 1 0 7.12 8.64 5.6 5.6 0 1 0-7.12-8.64zM1267.88 8.34a5.6 5.6 0 1 0 7.13 8.64 5.6 5.6 0 1 0-7.13-8.64zM1278.06 20.68a5.6 5.6 0 1 0 7.13 8.64 5.6 5.6 0 1 0-7.13-8.64zM1288.24 33.02a5.6 5.6 0 1 0 7.13 8.64 5.6 5.6 0 1 0-7.13-8.64zM1224.99-18.51a5.6 5.6 0 1 0 7.13 8.64 5.6 5.6 0 1 0-7.13-8.64zM1235.17-6.16a5.6 5.6 0 1 0 7.13 8.63 5.6 5.6 0 1 0-7.13-8.63zM1245.35 6.18a5.6 5.6 0 1 0 7.13 8.64 5.6 5.6 0 1 0-7.13-8.64zM1255.54 18.52a5.6 5.6 0 1 0 7.12 8.64 5.6 5.6 0 1 0-7.12-8.64z' stroke='rgba(255%2c 255%2c 255%2c 1)' stroke-width='1.57'%3e%3c/path%3e%3cpath d='M1443.48 230.23 L1497.1399999999999 308.3L1507.8574791112987 231.71752088870124z' stroke='rgba(255%2c 255%2c 255%2c 1)' stroke-width='2.41' stroke-dasharray='4%2c 4'%3e%3c/path%3e%3cpath d='M508.17 377.17 L407.94000000000005 408.84000000000003L496.0836622832369 431.0336622832368z' stroke='rgba(255%2c 255%2c 255%2c 1)' stroke-width='2.72' stroke-dasharray='4%2c 4'%3e%3c/path%3e%3cpath d='M1330 106.03L1339.25 114.88 1332.64 125.85 1341.89 134.71 1335.28 145.68 1344.53 154.53 1337.92 165.5M1322.07 107.08L1331.32 115.94 1324.71 126.91 1333.96 135.76 1327.35 146.73 1336.6 155.59 1329.99 166.56' stroke='rgba(255%2c 255%2c 255%2c 1)' stroke-width='2.65' stroke-dasharray='3%2c 3'%3e%3c/path%3e%3crect width='183.04' height='183.04' clip-path='url(%26quot%3b%23SvgjsClipPath2768%26quot%3b)' x='546.49' y='229.2' fill='url(%26quot%3b%23SvgjsPattern2769%26quot%3b)' transform='rotate(18.35%2c 638.01%2c 320.72)'%3e%3c/rect%3e%3crect width='84' height='84' clip-path='url(%26quot%3b%23SvgjsClipPath2770%26quot%3b)' x='1372.73' y='117.98' fill='url(%26quot%3b%23SvgjsPattern2771%26quot%3b)' transform='rotate(233.06%2c 1414.73%2c 159.98)'%3e%3c/rect%3e%3cpath d='M1105.14 122.17a5.6 5.6 0 1 0-3.52-10.63 5.6 5.6 0 1 0 3.52 10.63zM1100.11 106.99a5.6 5.6 0 1 0-3.53-10.63 5.6 5.6 0 1 0 3.53 10.63zM1095.07 91.8a5.6 5.6 0 1 0-3.52-10.63 5.6 5.6 0 1 0 3.52 10.63zM1090.04 76.61a5.6 5.6 0 1 0-3.53-10.63 5.6 5.6 0 1 0 3.53 10.63z' stroke='rgba(255%2c 255%2c 255%2c 1)' stroke-width='1' stroke-dasharray='3%2c 2'%3e%3c/path%3e%3cpath d='M1257.16 484.94a5.6 5.6 0 1 0-9.47 5.98 5.6 5.6 0 1 0 9.47-5.98zM1243.63 493.48a5.6 5.6 0 1 0-9.47 5.98 5.6 5.6 0 1 0 9.47-5.98zM1230.1 502.02a5.6 5.6 0 1 0-9.47 5.98 5.6 5.6 0 1 0 9.47-5.98zM1216.57 510.56a5.6 5.6 0 1 0-9.47 5.98 5.6 5.6 0 1 0 9.47-5.98zM1275.68 454.33a5.6 5.6 0 1 0-9.47 5.98 5.6 5.6 0 1 0 9.47-5.98zM1262.15 462.87a5.6 5.6 0 1 0-9.47 5.98 5.6 5.6 0 1 0 9.47-5.98zM1248.62 471.41a5.6 5.6 0 1 0-9.47 5.98 5.6 5.6 0 1 0 9.47-5.98zM1235.09 479.95a5.6 5.6 0 1 0-9.47 5.98 5.6 5.6 0 1 0 9.47-5.98z' stroke='rgba(255%2c 255%2c 255%2c 1)' stroke-width='1'%3e%3c/path%3e%3cpath d='M927.76 323.29L915.01 324.4 911.12 312.2 898.36 313.31 894.48 301.11 881.72 302.22 877.84 290.01M932.2 316.63L919.44 317.74 915.56 305.54 902.8 306.65 898.91 294.45 886.16 295.56 882.27 283.36M936.64 309.97L923.88 311.08 919.99 298.88 907.24 299.99 903.35 287.79 890.59 288.9 886.71 276.7' stroke='rgba(255%2c 255%2c 255%2c 1)' stroke-width='2.59' stroke-dasharray='3%2c 3'%3e%3c/path%3e%3crect width='324' height='324' clip-path='url(%26quot%3b%23SvgjsClipPath2772%26quot%3b)' x='297.85' y='-82.07' fill='url(%26quot%3b%23SvgjsPattern2773%26quot%3b)' transform='rotate(188.47%2c 459.85%2c 79.93)'%3e%3c/rect%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask2767'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cpattern x='0' y='0' width='7.04' height='7.04' patternUnits='userSpaceOnUse' id='SvgjsPattern2769'%3e%3cpath d='M3.52 1L3.52 6.04M1 3.52L6.04 3.52' stroke='rgba(255%2c 255%2c 255%2c 1)' fill='none' stroke-width='1'%3e%3c/path%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath2768'%3e%3ccircle r='45.76' cx='638.01' cy='320.72'%3e%3c/circle%3e%3c/clipPath%3e%3cpattern x='0' y='0' width='6' height='6' patternUnits='userSpaceOnUse' id='SvgjsPattern2771'%3e%3cpath d='M0 6L3 0L6 6' stroke='rgba(255%2c 255%2c 255%2c 1)' fill='none'%3e%3c/path%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath2770'%3e%3ccircle r='21' cx='1414.73' cy='159.98'%3e%3c/circle%3e%3c/clipPath%3e%3cpattern x='0' y='0' width='324' height='6' patternUnits='userSpaceOnUse' id='SvgjsPattern2773'%3e%3crect width='324' height='3' x='0' y='0' fill='rgba(255%2c 255%2c 255%2c 1)'%3e%3c/rect%3e%3crect width='324' height='3' x='0' y='3' fill='rgba(0%2c 0%2c 0%2c 0)'%3e%3c/rect%3e%3c/pattern%3e%3cclipPath id='SvgjsClipPath2772'%3e%3ccircle r='81' cx='459.85' cy='79.93'%3e%3c/circle%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e");
+display: flex;
+  justify-content: space-around;
+}
+#div3 { background-color: #5c6164;
+ display: flex;
+justify-content: space-around; 
+}
+#div4 { background-color: #5c6164;
+  display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1018%26quot%3b)' fill='none'%3e%3cpath d='M -300.4971946638934%2c216 C -204.5%2c251.2 -12.5%2c388.6 179.50280533610658%2c392 C 371.5%2c395.4 467.5%2c248.6 659.5028053361066%2c233 C 851.5%2c217.4 947.5%2c322 1139.5028053361066%2c314 C 1331.5%2c306 1559.4%2c179.4 1619.5028053361066%2c193 C 1679.6%2c206.6 1475.9%2c344.2 1440%2c382' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M -928.3892851698126%2c242 C -832.39%2c266.6 -640.39%2c370.6 -448.3892851698126%2c365 C -256.39%2c359.4 -160.39%2c218.8 31.61071483018742%2c214 C 223.61%2c209.2 319.61%2c336.6 511.6107148301874%2c341 C 703.61%2c345.4 805.93%2c232.6 991.6107148301874%2c236 C 1177.29%2c239.4 1350.32%2c333.6 1440%2c358' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M -97.3376746858284%2c392 C -1.34%2c347.8 190.66%2c189.8 382.6623253141716%2c171 C 574.66%2c152.2 670.66%2c290.4 862.6623253141715%2c298 C 1054.66%2c305.6 1150.66%2c199.2 1342.6623253141715%2c209 C 1534.66%2c218.8 1803.19%2c333.6 1822.6623253141715%2c347 C 1842.13%2c360.4 1516.53%2c290.2 1440%2c276' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M -784.8548920540851%2c190 C -688.85%2c219.6 -496.85%2c330.6 -304.8548920540851%2c338 C -112.85%2c345.4 -16.85%2c229.6 175.1451079459149%2c227 C 367.15%2c224.4 463.15%2c321.8 655.1451079459149%2c325 C 847.15%2c328.2 978.17%2c230.2 1135.1451079459148%2c243 C 1292.12%2c255.8 1379.03%2c359.8 1440%2c389' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1018'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+          }
+#div5 { background-color:#5c6164;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1003%26quot%3b)' fill='none'%3e%3cpath d='M98.82 0C130 41.06 90.74 75.7 106.33 140C111.33 160.65 121.81 169.89 140 169.89C163.28 169.89 179.44 164.62 189.26 140C213.31 79.67 177.73 46.31 207.74 0C223.1 -23.69 243.87 0 280 0C313.94 0 321.39 -16.09 347.88 0C391.39 26.41 383.42 42.95 420 85C444.32 112.95 469.68 113.13 469.68 140C469.68 165.47 441.18 161.92 420 189.68C387.77 231.92 362.86 240.77 362.86 280C362.86 305.37 392.59 297.88 420 318.89C483.92 367.88 521.42 356.35 545.52 420C567.07 476.91 549.72 517.15 511.3 560C486.96 587.15 465.65 560 420 560C350 560 350 560 280 560C222.89 560 215.2 574.12 165.79 560C145.2 554.12 152.95 520 140 520C126.99 520 134.56 554.09 113.87 560C64.56 574.09 25.54 591.4 0 560C-31.4 521.4 0 490 0 420C0 350 0 350 0 280C0 210 0 210 0 140C0 70 -28.96 41.04 0 0C20.45 -28.96 76.84 -28.94 98.82 0' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M560 55.15C531.47 55.15 499.33 15.85 499.33 0C499.33 -11.73 529.66 0 560 0C583.34 0 606.67 -10.82 606.67 0C606.67 16.75 585.14 55.15 560 55.15' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M614.9 140C645.11 93.36 652.06 93.68 700 63.86C764.61 23.68 770 31.93 840 0C840 0 840 0 840 0C910 0 910 0 980 0C1050 0 1050 0 1120 0C1190 0 1190 0 1260 0C1309.51 0 1314.14 -11.97 1359.02 0C1384.14 6.7 1377.88 37.33 1400 37.33C1427.84 37.33 1426.57 8.63 1458.95 0C1496.57 -10.03 1522.35 -22.87 1540 0C1562.87 29.63 1547.23 54.42 1540 105C1537.23 124.42 1520 123.9 1520 140C1520 151.15 1538.12 146.32 1540 159.49C1548.12 216.32 1540 219.75 1540 280C1540 350 1540 350 1540 420C1540 490 1571.11 521.11 1540 560C1515.11 591.11 1474.31 576.54 1428 560C1404.31 551.54 1411.89 536.01 1400 510C1379.89 466.01 1396.66 449.93 1364 420C1326.66 385.77 1310.2 381.68 1260 381.68C1226.27 381.68 1196.14 394.82 1196.14 420C1196.14 455.34 1220.28 470.66 1260 502.73C1306.99 540.66 1369.57 544.82 1369.57 560C1369.57 573.45 1314.78 560 1260 560C1190 560 1190 560 1120 560C1061.97 560 1055.88 572.06 1003.95 560C985.88 555.81 993.06 527.5 980 527.5C965.39 527.5 969.18 555.23 948.62 560C899.18 571.48 894.31 560 840 560C770 560 770 560 700 560C650.74 560 620.75 588.9 601.48 560C574.08 518.9 616.77 488.18 606.67 420C596.03 348.18 557.96 349.34 560 280C562.08 209.34 575.11 201.43 614.9 140' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1120 119.58C1111.58 119.58 1106.39 128.47 1106.39 140C1106.39 171.35 1110.4 205.33 1120 205.33C1130.1 205.33 1145.79 169.2 1145.79 140C1145.79 126.32 1131.28 119.58 1120 119.58' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M840 413.82C826.59 413.82 812 416.31 812 420C812 423.78 827.03 428.75 840 428.75C845.59 428.75 849.13 423.99 849.13 420C849.13 416.52 845.16 413.82 840 413.82' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M30.2 0C55.82 57.83 30.23 79.4 62.03 140C85.13 184.01 97.88 209.21 140 209.21C193.9 209.21 209.92 185.06 254.07 140C279.92 113.62 260.88 66.32 280 66.32C303.01 66.32 336.11 98.45 338.33 140C341.82 205.29 271.54 224.6 291.43 280C312.38 338.35 357.02 321.99 420 367.5C453.89 391.99 482.43 385.33 485.17 420C490.04 481.58 464.78 496.5 435.22 560C432.19 566.5 427.61 560 420 560C350 560 350 560 280 560C245.92 560 235.61 578.92 211.84 560C165.61 523.2 176.09 448.57 140 448.57C103.77 448.57 113.72 522.98 67.2 560C43.72 578.69 10.9 582.7 0 560C-22.7 512.7 0 490 0 420C0 350 0 350 0 280C0 210 0 210 0 140C0 70 -12.42 57.58 0 0C2.68 -12.42 24.81 -12.17 30.2 0' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M683.53 140C686.87 129.71 690.7 125.26 700 125.26C714.49 125.26 715.41 132.94 731.11 140C785.41 164.41 790.05 188.2 840 188.2C868.59 188.2 880.13 170.81 888.2 140C904.78 76.71 861.45 42.48 889.3 0C907.35 -27.52 934.65 0 980 0C1050 0 1050 0 1120 0C1190 0 1190 0 1260 0C1288.17 0 1293.07 -12.67 1316.34 0C1363.07 25.44 1357.63 38.72 1400 76.22C1436.73 108.72 1438.31 106.98 1474.55 140C1508.31 170.77 1522.15 165.63 1540 203.8C1554.88 235.63 1540 241.9 1540 280C1540 350 1540 350 1540 420C1540 483 1562.52 546 1540 546C1510.88 546 1466.67 491.47 1436.72 420C1410.93 358.47 1442.72 345.58 1428.52 280C1424.36 260.77 1414.19 250.38 1400 250.38C1385.93 250.38 1388.77 268.69 1372 280C1318.77 315.92 1315.25 344.84 1260 344.84C1208.76 344.84 1163.75 323.79 1159.02 280C1152.69 221.37 1247.97 200.27 1237.89 140C1228.46 83.6 1171.58 46.67 1120 46.67C1081.52 46.67 1074.29 88.21 1057.78 140C1037.1 204.88 1029.31 216.16 1045.63 280C1060.42 337.9 1085.96 330.01 1120 383.48C1130.52 400.01 1123.84 403.72 1134.74 420C1182.95 491.98 1242.61 518.31 1238.22 560C1235.24 588.31 1179.11 560 1120 560C1085 560 1076.06 577.69 1050 560C1006.06 530.19 1018.98 508.73 980 465C956.59 438.73 953.78 440.94 925.22 420C883.78 389.61 887.64 376.61 840 362.35C775.03 342.9 758.39 377.86 700 352.59C663.26 336.69 652.87 320.4 649.74 280C644.63 214.1 661.74 207.08 683.53 140' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1540 25.45C1534.52 25.45 1520.35 7.9 1520.35 0C1520.35 -4.83 1535.72 -5.54 1540 0C1545.54 7.18 1544.34 25.45 1540 25.45' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M666.3 560C666.3 535.59 669.07 500.39 700 490C755.92 471.22 778.83 478.93 840 501.67C872.97 513.93 888.28 542.19 888.28 560C888.28 571.36 864.14 560 840 560C770 560 770 560 700 560C683.15 560 666.3 570.59 666.3 560' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M0 81.67C4.53 81.67 17.72 111.19 17.72 140C17.72 162.93 4.59 185.16 0 185.16C-4.27 185.16 0 162.58 0 140C0 110.84 -4.33 81.67 0 81.67' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M945.57 140C933 72.02 925.3 54.04 938.59 0C942.52 -15.96 959.3 0 980 0C1029 0 1072.37 -27.01 1078 0C1086.96 42.99 1040.38 68.66 1009.17 140C991.38 180.66 995.74 224 980 224C963.94 224 953.71 184.02 945.57 140' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1260 41.48C1234.52 41.48 1194.12 11.23 1194.12 0C1194.12 -9.51 1227.06 0 1260 0C1266.83 0 1273.66 -4.94 1273.66 0C1273.66 15.8 1274.29 41.48 1260 41.48' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1336 140C1336 124 1370.12 115.11 1400 115.11C1416.66 115.11 1429.09 125.59 1429.09 140C1429.09 159.57 1418.74 183.08 1400 183.08C1372.19 183.08 1336 157.98 1336 140' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M71.71 280C71.71 256.77 105.85 248.54 140 248.54C174.14 248.54 208.29 256.77 208.29 280C208.29 312.5 174.14 360 140 360C105.85 360 71.71 312.5 71.71 280' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M759.23 280C759.23 263.55 799.49 245.57 840 245.57C881.88 245.57 924 263.56 924 280C924 296.21 881.9 310.88 840 310.88C799.52 310.88 759.23 296.2 759.23 280' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1216.39 280C1216.39 249.91 1237.37 210 1260 210C1283.35 210 1308.36 250.42 1308.36 280C1308.36 299.42 1283.86 308 1260 308C1237.87 308 1216.39 298.91 1216.39 280' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1493.33 280C1499.93 255.28 1525.08 248.1 1540 248.1C1548.42 248.1 1540 264.05 1540 280C1540 350 1540 350 1540 420C1540 448 1550.01 476 1540 476C1527.06 476 1502.05 453.41 1494.1 420C1478.72 355.41 1476.98 341.23 1493.33 280' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M350 420C350 415.88 385.63 416.11 420 416.11C423.04 416.11 424.83 417.4 424.83 420C424.83 425.71 426.01 432.73 420 432.73C388.59 432.73 350 424.19 350 420' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M0 441.54C5.17 441.54 20.53 509.41 20.53 560C20.53 568.64 1.52 568.75 0 560C-8.75 509.52 -5.09 441.54 0 441.54' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M257.89 560C257.89 509.2 262.01 440 280 440C299.31 440 332.5 517.17 332.5 560C332.5 577.17 306.25 560 280 560C268.94 560 257.89 569.2 257.89 560' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3cpath d='M1096.05 560C1096.05 539.52 1104.89 503.13 1120 503.13C1137.09 503.13 1160.44 542 1160.44 560C1160.44 570.43 1140.22 560 1120 560C1108.03 560 1096.05 567.95 1096.05 560' stroke='rgba(0%2c 0%2c 0%2c 1)' stroke-width='2'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1003'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+display: flex;
+justify-content: space-around;
+}
+
+
+.left{
+  height: 100vh;
+  width:50%;
+}
+.right{
+  height: 91.5vh;
+  width:50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.text{
+  padding-top: 100px;
+  padding-left: 100px;
+}
+#h{
+  font-size: small;
+  transform: rotate(5deg);
+}
+#ex{
+  font-size: 70px;
+  background-color: #919699;
+}
+.p{
+  padding-bottom: 20px;
+}
+.auto-type{
+  font-size: 20px;
+
+}
+.img{
+  height: 80vh;
+  width: 80%;
+  background-color: #3357ff;
+  border-radius: 65% 35% 75% 25% / 43% 62% 38% 57% ;
+  background-image: url("zoo zoo.jpg");
+  background-size:610px;
+  box-shadow: #333333;
+}
+.testi{
+  margin-left: 100px;
+  margin-top: 10px;
+  display: flex;
+  width: 60%;
+  justify-content: space-between;
+}
+.user>i{
+  font-size: 40px;
+}
+.user>i:hover{
+color:blue;
+}
+.user{
+  text-align: center;
+}
+
+.pro>i{
+  font-size: 40px;
+}
+.pro{
+  text-align: center;
+}
+.pro>i:hover{
+  color:yellow;
+}
+.star>i{
+  font-size: 20px;
+}
+.star>i:hover{
+  color: gold;
+}
+.star{
+  text-align: center;
+}
+.star>p{
+  margin-top: 20px;
+}
+.gray{
+  height: 125px;
+  width:100%;
+  background-color:#919699;
+}
+
+/* div2 css */
+
+.left2{
+height: 100vh;
+width: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.myimg{
+height: 70vh;
+width: 70%;
+background-image: url("my.jpg");
+border-radius: 51% 49% 54% 46% / 48% 51% 49% 52% ;
+background-size:550px ;
+background-position-x: center;
+background-position-y:-180px ;
+box-shadow:2px 5px 20px #919699;
+}
+
+.right2{
+  height: 100vh;
+width: 50%;
+float: right;
+}
+.mytext{
+  margin-top: 110px;
+  margin-right: 100px;
+  background-color: #5c6164;
+}
+#hi{
+  font-size: 50px;
+}
+#aboutnav{
+  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+}
+#aboutnav>a{
+  text-decoration: none;
+  color:white;
+}
+#aboutnav>a:hover{
+  color: black;
+}
+
+#results{
+  margin-top: 20px;
+  height: 25vh;
+  background-color: #5c6164;
+}
+
+/* div 3 style */
+
+.tech{
+  height: 100vh;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pro1{
+  padding-top: 10px;
+  height: 91.5vh;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tskills{
+  height: 70%;
+  width: 70%;
+}
+.pskills{
+  height: 70%;
+  width: 70%;
+}
+.creativity,.communication,.problem,.teamwork{
+  width: 50%;
+  height: 40%;
+}
+
+
+.psb{
+  display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates 2 columns */
+    grid-gap: 10px;
+  height: 70%;
+  margin-left: 90px;
+  padding-top:20px;
+}
+
+/* div 4 style */
+.position {
+            height: 70vh;
+            width: 90vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            height: 60vh;
+            width: 20vw;
+            background-color: aqua;
+            margin: 0px 50px;
+            border-radius: 25px;
+            border: whitesmoke solid 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 5px 5px 20px black;
+        }
+        .img-card1, .img-card2, .img-card3 {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            filter: grayscale(80%);
+        }
+        .card-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: -100%;
+            background: rgba(31, 61, 71, 0.22);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: left 0.5s ease-in-out;
+        }
+        .card:hover .card-body {
+            left: 0;
+        }
+        .card-title {
+            text-transform: uppercase;
+            font-size: 30px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: black;
+            margin-left: 20px;
+        }
+        .cardinfo {
+            font-size: 16px;
+            line-height: 25px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            color:black;
+
+        }
+        .btn-c {
+            color: #1f3d47;
+            background: #8fabba;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-transform: capitalize;
+            border: none;
+            outline: none;
+            font-weight: 500;
+            cursor: pointer;
+            width: 120px;
+            margin-left: 20px;
+
+        }
+        .social{
+          height: 100vh;
+          width: 40%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .form{
+          height: 91.5vh;
+          width: 60%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .sc{
+          height: 40%;
+          width: 50%;
+          border: white solid 5px;
+          border-radius: 20px;
+          box-shadow:5px 5px 20px black;
+          background-color: #5c6164;
+        }
+        .social-icon{
+          margin-top: 30px;
+          font-size: 70px;
+          text-align: center;
+        }
+        .social-icon>i:hover{
+          color: lightblue;
+        }
+        .form-element{
+          margin-top: 20px;
+          height: 80%;
+          width: 70%;
+          display: flex;
+          border-radius:20px ;
+          flex-direction: column;
+          justify-content: center;
+          #fn::placeholder {
+            color:white; /* Change this to your desired color */
+            text-align: center;
+            font-size: 20px;
+            opacity: 1; /* For older browsers to make the color more solid */
+        }
+        #ln::placeholder {
+            color:white; /* Change this to your desired color */
+            text-align: center;
+            font-size: 20px;
+            opacity: 1; /* For older browsers to make the color more solid */
+        }
+        #email::placeholder {
+            color:white; /* Change this to your desired color */
+            text-align: center;
+            font-size: 20px;
+            opacity: 1; /* For older browsers to make the color more solid */
+        }
+        #Msg::placeholder {
+            color:white; /* Change this to your desired color */
+            text-align: center;
+            font-size: 20px;
+            opacity: 1; /* For older browsers to make the color more solid */
+        }
+        }
+        #fn{
+          height: 70px;
+          width: 48%;
+          margin: 2px;
+          border: white solid 2px;
+          background: #5c6164;
+          color:white;
+          margin-left: 7px;
+          box-shadow: 5px 5px 20px black;
+          border-radius: 5px;
+        }
+        #ln{
+          height: 70px;
+          width: 48%;
+          margin: 2px;
+          background: #5c6164;
+          color:white;
+          border: white solid 2px;
+          box-shadow: 5px 5px 20px black;
+          border-radius: 5px;
+
+        }
+        #email{
+          height: 60px;
+          width:97.5%;
+          margin: 2px;
+          background: #5c6164;
+          color:white;
+          border: white solid 2px;
+          margin-left: 7px;
+          box-shadow: 5px 5px 20px black;
+          border-radius: 5px;
+
+        }
+      #Msg{
+        height: 300px;
+        width: 97.5%;
+        margin: 2px;
+          background: #5c6164;
+          color:white;
+          border: white solid 2px;
+          margin-left: 7px;
+          box-shadow: 5px 5px 20px black;
+          border-radius: 5px;
+
+      }
+      footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: #5c6164;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<nav data-aos="fade-down" data-aos-duration="250" class="navbar">
+  <ul class="nav-list">
+    <li><img  data-aos="zoom-in" data-aos-duration="1500" src="logoremove.png" id="logo" width="100px"></li>
+    <li><a href="#div1" data-aos="fade-up" data-aos-duration="500" class="nav-link">Home</a></li>
+    <li><a href="#div2" data-aos="fade-up" data-aos-duration="1000" class="nav-link">About</a></li>
+    <li><a href="#div3" data-aos="fade-up" data-aos-duration="2000" class="nav-link">Skills</a></li>
+    <li><a href="#div4" data-aos="fade-up" data-aos-duration="2500" class="nav-link">Services</a></li>
+    <li><a href="#div5" data-aos="fade-up" data-aos-duration="3000" class="nav-link">Contact</a></li>
+  </ul>
+</nav>
+<div class="colorful-div" id="div1">
+  <div class="left">
+    <div  class="text">
+    <pre id="h" data-aos="zoom-in" data-aos-duration="1500">Hello !</pre>
+    <p id="ex" data-aos="fade-right">I have </p>
+<p id="ex" data-aos="fade-right">Experence in </p>
+<p id="ex" class="p" data-aos="fade-right"> Web Development</p>
+<div class="gray">
+    <span class="auto-type" data-aos="fade-right" ></span>
+  </div>
+  </div>
+  <div class="testi">
+    <div class="user" data-aos="fade-down" data-aos-duration="250">
+      <i class="ri-user-5-fill" id="user"></i>
+    <p>500+ users</p>
+    </div>
+    <div class="pro" data-aos="fade-down" data-aos-duration="500">
+      <i class="ri-folder-6-fill" id="fold"></i>
+    <p>15+ projects</p>
+    </div>
+    <div class="star" data-aos="fade-down" data-aos-duration="1000">
+      <i class="ri-star-fill" data-aos="fade-down" data-aos-duration="1500"></i><i class="ri-star-fill" data-aos="fade-down" data-aos-duration="2000"></i><i class="ri-star-fill" data-aos="fade-down" data-aos-duration="2250"></i><i class="ri-star-fill" data-aos="fade-down" data-aos-duration="2500"></i><i class="ri-star-half-line" data-aos="fade-down" data-aos-duration="2750"></i>
+    <p>4.5</p>
+    </div>
+    
+  </div>
+  </div>
+  <div class="right">
+    <div class="img" data-aos="zoom-in-left" data-aos-duration="1000">
+    </div>
+  </div>
+
+</div>
+<div class="colorful-div" id="div2">
+<div class="left2">
+<div data-aos="zoom-in-right" data-aos-duration="1000"  class="myimg">
+</div>
+</div>
+<div class="right2">
+  <div class="mytext">
+<p id="hi" data-aos="fade" data-aos-duration="3000">Hi, I am Ansul Joshi </p>
+<p id="des" data-aos="fade-left" data-aos-duration="2000"> a passionate and dedicated Full Stack Web Developer with a proven track record of building dynamic and responsive web applications. With extensive experience in both front-end and back-end development, I bring a versatile skill set that allows me to tackle a wide range of projects and challenges.</p>
+<nav id="aboutnav"> 
+  <a data-aos="fade-up" data-aos-duration="500" id="exp" href="#div2" onclick="exp()">Experience</a>
+  <a data-aos="fade-up" data-aos-duration="1500" id="qua" href="#div2" onclick="qua()">Qualifications</a>
+</nav>
+<p id="results" data-aos="fade"></p>
+</div>
+</div>
+</div>
+<div class="colorful-div" id="div3">
+<div class="tech">
+  <div class="tskills">
+    <h2 style="margin-bottom: 40px; text-align: center; text-decoration: underline;" data-aos="fade">Technical skills</h2>
+    <h4 data-aos="fade-right" data-aos-duration="500">Html</h4>
+    <div data-aos="fade-right" data-aos-duration="500"  id="myProgress">
+      <div  class="myBar">1%</div>
+    </div>
+    <h4  data-aos="fade-right" data-aos-duration="1000">Css</h4>
+    <div  data-aos="fade-right" data-aos-duration="1000" id="myProgress">
+      <div class="myBar">1%</div>
+    </div>
+    <h4  data-aos="fade-right" data-aos-duration="1500">JS</h4>
+    <div  data-aos="fade-right" data-aos-duration="1500" id="myProgress">
+      <div class="myBar">1%</div>
+    </div>
+    <h4  data-aos="fade-right" data-aos-duration="2000">PHP</h4>
+    <div  data-aos="fade-right" data-aos-duration="2000" id="myProgress">
+      <div class="myBar">1%</div>
+    </div>
+    <h4  data-aos="fade-right" data-aos-duration="2500">SQL</h4>
+    <div  data-aos="fade-right" data-aos-duration="2500" id="myProgress">
+      <div  class="myBar">1%</div>
+    </div>
+  </div>
+</div>
+<div class="pro1">
+  <div class="pskills">
+    <h2 style="margin-bottom: 40px; text-align: center; text-decoration: underline;">Professional skills</h2>
+    <div class="psb">
+    <div class="creativity" data-aos="fade-down-right" data-aos-duration="1000">
+      <circle-progress value="75" max="100" animation-duration="4300" ></circle-progress>
+      <h4>Creativity</h4>
+    </div>
+    <div class="communication" data-aos="fade-down-left" data-aos-duration="1000">
+      <circle-progress value="60" max="100" animation-duration="4300"></circle-progress>
+      <h4>Communication</h4>
+    </div>
+    <div class="problem" data-aos="fade-up-right" data-aos-duration="1000">
+      <circle-progress value="80" max="100" animation-duration="4300"></circle-progress>
+      <h4>Problem Solving</h4>
+    </div>
+    <div class="teamwork" data-aos="fade-up-left" data-aos-duration="1000">
+      <circle-progress value="55" max="100" animation-duration="4300"></circle-progress>
+      <h4>Teamwork</h4>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+<div class="colorful-div" id="div4">
+  <div class="position">
+    <div class="card" data-aos="fade-right" data-aos-duration="1000">
+        <img src="https://img.freepik.com/free-vector/single-page-application-abstract-concept-illustration-spa-web-page-web-development-trend-app-inside-browser-dynamically-rewriting-page-responsive-website-creation_335657-899.jpg?w=740&t=st=1716481830~exp=1716482430~hmac=76a5e93e3a674fc41c4bf1b758fdbc4f097caabf247d344cf40ca8460d1c7e77" alt="" class="img-card1">   
+        <div class="card-body">
+            <h1 class="card-title">Front-End Development</h1>
+            <p class="cardinfo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur rerum dicta quidem! Explicabo cumque, voluptatem fugiat aut doloremque earum at dolore, consequuntur molestias quasi atque vel a deserunt eum alias?</p>
+            <button class="btn-c">Contact</button>
+        </div>
+    </div>
+    <div class="card" data-aos="fade" data-aos-duration="1000">
+        <img src="https://img.freepik.com/free-vector/big-data-center-server-room-rack-engineering-process-teamwork-computer-technology-cloud-storage_39422-1032.jpg?t=st=1716482098~exp=1716485698~hmac=bf0a8d87cfead09e80d4230ab8916907a7f737cbf36ce3a0d4db14f27fa1e3ac&w=900" alt="" class="img-card2">
+        <div class="card-body">
+            <h1 class="card-title">Back-end Development</h1>
+            <p class="cardinfo">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores, temporibus quas vel ut provident tenetur quod soluta sit sed porro dolores. Beatae iusto autem aut aperiam hic molestiae harum tenetur.</p>
+            <button class="btn-c">Contact</button>
+        </div>
+    </div>
+    <div class="card" data-aos="fade-left" data-aos-duration="1000">
+        <img src="https://img.freepik.com/free-vector/flat-design-sql-illustration_23-2149231424.jpg?t=st=1716482171~exp=1716485771~hmac=ab64d7c0229391eaf09a9e2713eaa71c86b69f23773774951d4b532c9df33d34&w=740" alt="" class="img-card3">
+        <div class="card-body">
+            <h1 class="card-title">Database Management</h1>
+            <p class="cardinfo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quibusdam omnis! Neque itaque id eveniet, dolorum velit quam assumenda suscipit, officiis consectetur non ratione ducimus alias architecto nisi veritatis!</p>
+            <button class="btn-c">Contact</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="colorful-div" id="div5">
+  <div class="social">
+    <div class="sc" data-aos="fade" data-aos-duration="250">
+      <h2 style="text-align: center; padding-top: 20px;">My Socials</h2>
+      <div class="social-icon">
+        <i class="ri-github-fill" data-aos="fade" data-aos-duration="550" ></i>
+        <i class="ri-mail-fill" data-aos="fade" data-aos-duration="1000"></i>
+        <i class="ri-linkedin-box-fill" data-aos="fade" data-aos-duration="1500"></i>
+        <i class="ri-instagram-fill" data-aos="fade" data-aos-duration="2000"></i>
+        <i class="ri-facebook-box-fill" data-aos="fade" data-aos-duration="2500"></i>
+        <i class="ri-chat-3-line" data-aos="fade" data-aos-duration="3000"></i>
+      </div>
+    </div>
+  </div>
+  <div class="form">
+    <div class="form-element">
+      <form>
+        <div class="name" >
+        <input id="fn" type="text"placeholder="First Name" data-aos="fade-up" data-aos-duration="500">
+        <input id="ln" type="text" placeholder="Last Name" data-aos="fade-up" data-aos-duration="1000">
+        </div>
+        <input id="email" type="email" placeholder="Email Name" data-aos="fade-up" data-aos-duration="1500">
+        <input type="text" id="Msg" placeholder="Enter Your Msg" data-aos="fade-up" data-aos-duration="2000">
+      </form>
+    </div>
+  </div>
+</div>
+<footer>
+  <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+  <p>Support: <a href="mailto:support@Strange.com">support@Strange.com</a></p>
+</footer>
+<script>
+  AOS.init();
+</script>
+<script>
+  var percentages = [90, 70, 60, 80, 90]; // Array of target percentages
+
+function move() {
+  var bars = document.getElementsByClassName("myBar");
+  for (let j = 0; j < bars.length; j++) {
+    let elem = bars[j];
+    let width = 1;
+    let target = percentages[j]; // Get the target percentage for this bar
+    let id = setInterval(frame, 35); // Adjusted interval for smoothness
+
+    function frame() {
+      if (width >= target) {
+        clearInterval(id);
+      } else {
+        width++;
+        elem.style.width = width + "%";
+        elem.innerHTML = Math.round(width) + "%";
+      }
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  var div2 = document.getElementById('div3');
+  var observer = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        move();
+        observer.disconnect(); // Stop observing after triggering
+      }
+    });
+  }, { threshold: 0.5 }); // Trigger when 50% of the div is visible
+
+  observer.observe(div2);
+});
+
+  </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      const targetId = this.getAttribute('href').substring(1);
+      const targetDiv = document.getElementById(targetId);
+
+      if (targetDiv) {
+        targetDiv.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+});
+</script>
+<script>
+  var typed=new Typed(".auto-type",{
+    strings:[
+"Innovative coder blending creativity and precision to build impactful solutions.",
+"Tech enthusiast shaping tomorrow's world, one line of code at a time.",
+"Creative problem-solver coding dreams into reality, one project at a time."],
+    typeSpeed:15,
+    loop:true
+  })
+</script>
+<script>
+  function exp(){
+    document.getElementById('exp').style.textDecoration="underline";
+    document.getElementById('qua').style.textDecoration="";
+    document.getElementById('results').innerHTML="<ul><li><h3>Front-End Developer | ABC Tech</h3><p>January 2018 - May 2020</p></li><br><li><h3>Full Stack Web Developer | XYZ Solutions</h3><P> June 2020 - Present</p></li></ul>";
+  }
+  function qua(){
+  document.getElementById('qua').style.textDecoration="underline";
+  document.getElementById('exp').style.textDecoration="";
+  document.getElementById('results').innerHTML="<ul><li><h3>Bachelor of Science in Computer Science | pillai college of arts, commerce and Science .</h3></li></ul>";
+  }
+</script>
+</body>
+</html>

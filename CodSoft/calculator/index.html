@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+  </head>
+  <body>
+    <div
+      class="boarder"
+      style="border: 2px solid black; display: inline-block; padding: 10px"
+    >
+      <div class="container">
+        <textarea value="1" name="screen" id="ta" cols="14" rows="1"></textarea>
+      </div>
+      <div class="buttons">
+        <div id="1to3">
+          <button id="b1" onclick="one()" value="1">1</button>
+          <button id="b2" onclick="two()" value="2">2</button>
+          <button id="b3" onclick="three()" value="3">3</button>
+          <button style="width: 23px" onclick="cle()" value="clear">C</button>
+          <button style="width: 23px" onclick="allclear()" value="Clear">
+            AC
+          </button>
+        </div>
+        <div id="4to6">
+          <button id="b4" onclick="four()" value="4">4</button>
+          <button id="b5" onclick="five()" value="5">5</button>
+          <button id="b6" onclick="six()" value="6">6</button>
+          <button id="add" onclick="add()" value="+">+</button>
+          <button id="sub" onclick="sub()" value="-" style="width: 21px">
+            -
+          </button>
+        </div>
+        <div id="7to9">
+          <button id="b7" onclick="seven()" value="7">7</button>
+          <button id="b8" onclick="eight()" value="8">8</button>
+          <button id="b9" onclick="nine()" value="9">9</button>
+          <button id="mul" onclick="mul()" value="*" style="width: 23px">
+            *
+          </button>
+          <button id="div" onclick="div()" value="/" style="width: 23px">
+            \
+          </button>
+        </div>
+        <di id="zero">
+          <button id="b0" onclick="zero()" value="0" style="width: 50px">
+            0
+          </button>
+          <button onclick="dot()" value="." id="dot" style="width: 22px">
+            .
+          </button>
+          <button value="equals" onclick="equals()" style="width: 50px">
+            =
+          </button>
+        </di>
+      </div>
+    </div>
+    <p id="result"></p>
+    <script>
+      let number = [];
+
+      function one() {
+          number.push('1');
+          document.getElementById("ta").value = number.join('');
+      }
+      function two() {
+          number.push('2');
+          document.getElementById("ta").value = number.join('');
+      }
+      function three() {
+          number.push('3');
+          document.getElementById("ta").value = number.join('');
+      }
+      function four() {
+          number.push('4');
+          document.getElementById("ta").value = number.join('');
+      }
+      function five() {
+          number.push('5');
+          document.getElementById("ta").value = number.join('');
+      }
+      function six() {
+          number.push('6');
+          document.getElementById("ta").value = number.join('');
+      }
+      function seven() {
+          number.push('7');
+          document.getElementById("ta").value = number.join('');
+      }
+      function eight() {
+          number.push('8');
+          document.getElementById("ta").value = number.join('');
+      }
+      function nine() {
+          number.push('9');
+          document.getElementById("ta").value = number.join('');
+      }
+      function zero() {
+          number.push('0');
+          document.getElementById("ta").value = number.join('');
+      }
+      function dot() {
+          number.push('.');
+          document.getElementById("ta").value = number.join('');
+      }
+      function add() {
+          number.push('+');
+          document.getElementById("ta").value = number.join('');
+      }
+      function sub() {
+          number.push('-');
+          document.getElementById("ta").value = number.join('');
+      }
+      function mul() {
+          number.push('*');
+          document.getElementById("ta").value = number.join('');
+      }
+      function div() {
+          number.push('/');
+          document.getElementById("ta").value = number.join('');
+      }
+      function equals() {
+          let result = eval(number.join(''));
+          number = [result.toString()];
+          document.getElementById("ta").value = result;
+      }
+
+      function cle() {
+          number.pop();
+          document.getElementById("ta").value = number.join('');
+      }
+
+      function allclear() {
+          number = [];
+          document.getElementById("ta").value = '';
+      }
+  </script>
+  </body>
+</html>
